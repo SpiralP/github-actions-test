@@ -17,6 +17,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: target/release/libgithub_actions_test.so
+        files: |
+          target/release/libgithub_actions_test.so
+          target/release/github_actions_test.dll
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
