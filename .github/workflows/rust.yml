@@ -31,7 +31,7 @@ jobs:
 
 
   build_mac:
-    runs-on: macos-latest
+    runs-on: macOS-latest
     
     steps:
     - uses: actions/checkout@master
@@ -68,8 +68,6 @@ jobs:
       with:
         toolchain: nightly
         override: true
-      
-    - run: npm install --global windows-build-tools
       
     - name: Run cargo build
       uses: actions-rs/cargo@v1
