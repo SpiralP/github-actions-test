@@ -30,6 +30,7 @@ jobs:
       with:
         files: |
           target/release/libgithub_actions_test.so
+          target/release/libgithub_actions_test.dylib
           target/release/github_actions_test.dll
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
