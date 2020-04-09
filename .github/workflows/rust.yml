@@ -3,7 +3,7 @@ name: Rust
 on: [push]
 
 jobs:
-  build_windows:
+  windows:
     runs-on: windows-latest
 
     steps:
@@ -15,6 +15,7 @@ jobs:
           echo "##[add-path]$HOME\scoop\shims"
           echo "##[add-path]C:\ProgramData\scoop\shims"
           scoop install aria2
+          echo "##[add-path]$HOME\scoop\shims"
           scoop install llvm
           echo "::set-env name=LIBCLANG_PATH::$HOME\scoop\apps\llvm\current\bin"
           aria2c 'https://nmap.org/npcap/dist/npcap-0.9987.exe' -OutFile npcap.exe
