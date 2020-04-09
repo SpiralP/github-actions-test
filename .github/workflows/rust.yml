@@ -3,83 +3,21 @@ name: Rust
 on: [push]
 
 jobs:
-  build_linux:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@master
-      
-    - name: Install nightly
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-        override: true
-
-    - name: Run cargo build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: --release
-
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: target/release/libgithub_actions_test.so
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-  build_mac:
-    runs-on: macOS-latest
-    
-    steps:
-    - uses: actions/checkout@master
-      
-    - name: Install nightly
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-        override: true
-
-    - name: Run cargo build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: --release
-
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: target/release/libgithub_actions_test.dylib
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
   build_windows:
     runs-on: windows-latest
-    
+
     steps:
-    - uses: actions/checkout@master
-      
-    - name: Install nightly
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-        override: true
-      
-    - name: Run cargo build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: --release
+      - uses: actions/checkout@v2
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: target/release/github_actions_test.dll
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Install deps
+        run: |
+          iwr -useb get.scoop.sh | iex
+          echo "##[add-path]$HOME\scoop\shims"
+          echo "##[add-path]C:\ProgramData\scoop\shims"
+          scoop install aria2
+          scoop install llvm
+          echo "::set-env name=LIBCLANG_PATH::$HOME\scoop\apps\llvm\current\bin"
+          aria2c 'https://nmap.org/npcap/dist/npcap-0.9987.exe' -OutFile npcap.exe
+          7z x -y 'npcap.exe' '$SYSDIR\wpcap.dll' '$SYSDIR\Packet.dll'
+          echo '##[add-path].\$SYSDIR'
+          
