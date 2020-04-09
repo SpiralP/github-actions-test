@@ -30,6 +30,6 @@ jobs:
           7z x -y 'cef_binary.tar'
           Remove-Item 'cef_binary.tar'
           Get-ChildItem 'cef_binary_*' | Rename-Item -NewName 'cef_binary'
-          Get-ChildItem
           Move-Item -Path 'cef_binary' -Destination 'cef_interface'
           Get-ChildItem
+          Get-ChildItem cef_interface
