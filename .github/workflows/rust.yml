@@ -21,3 +21,9 @@ jobs:
           7z x -y 'npcap.exe' '$SYSDIR\wpcap.dll' '$SYSDIR\Packet.dll'
           echo '##[add-path].\$SYSDIR'
           
+          
+          aria2c 'http://opensource.spotify.com/cefbuilds/cef_binary_80.1.15%2Bg7b802c9%2Bchromium-80.0.3987.163_windows64.tar.bz2' -o cef_binary.tar.bz2
+          7z x -y 'cef_binary.tar.bz2'
+          7z x -y 'cef_binary.tar'
+          Get-ChildItem 'cef_binary_*' | Rename-Item -NewName 'cef_binary'
+          Get-ChildItem
