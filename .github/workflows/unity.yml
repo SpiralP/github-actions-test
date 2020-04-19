@@ -27,6 +27,14 @@ jobs:
             Library-${{ matrix.unityVersion }}-
             Library-
 
+      - name: free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
+
       - uses: webbertakken/unity-builder@v0.12
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
