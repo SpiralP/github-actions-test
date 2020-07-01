@@ -15,7 +15,7 @@ jobs:
       - name: aaa
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install gcc
+          sudo apt-get -y install gcc-8
           
           gcc --version
           cmake --version
