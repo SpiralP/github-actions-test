@@ -5,17 +5,18 @@ jobs:
   linux:
     name: Build Linux ${{ matrix.config.arch }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - { arch: x86_64, bits: 64 }
-
     steps:
       - name: aaa
         run: |
-          sudo apt-get -y update
-          sudo apt-get -y install gcc-8
-          
           gcc --version
+          gcc-9 --version
           cmake --version
+          type -a gcc
+          
+  mac:
+    name: Build MacOS ${{ matrix.config.arch }}
+    runs-on: macOS-latest
+    steps:
+      - name: a
+        run: |
+          type -a gcc
