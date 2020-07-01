@@ -20,3 +20,6 @@ jobs:
       - name: a
         run: |
           type -a gcc
+          gcc --version
+          gcc-9 --version
+          cmake --version
