@@ -8,6 +8,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: aggg
+        run: |
+          gcc --version
+          cmake --version
 
       - name: Install deps
         run: |
