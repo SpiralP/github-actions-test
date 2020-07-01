@@ -14,5 +14,8 @@ jobs:
     steps:
       - name: aaa
         run: |
+          sudo apt-get -y update
+          sudo apt-get -y install gcc
+          
           gcc --version
           cmake --version
