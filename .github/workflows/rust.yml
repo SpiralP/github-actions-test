@@ -23,3 +23,5 @@ jobs:
           gcc --version
           gcc-9 --version
           cmake --version
+          echo ag
+          type -a clang
