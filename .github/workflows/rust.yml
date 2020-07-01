@@ -1,40 +1,18 @@
 name: Rust
-
 on: [push]
 
 jobs:
-  windows:
-    runs-on: windows-latest
+  linux:
+    name: Build Linux ${{ matrix.config.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { arch: x86_64, bits: 64 }
 
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: aggg
+      - name: aaa
         run: |
           gcc --version
           cmake --version
-
-      - name: Install deps
-        run: |
-          iwr -useb get.scoop.sh | iex
-          echo "##[add-path]$HOME\scoop\shims"
-          echo "##[add-path]C:\ProgramData\scoop\shims"
-          scoop install aria2
-          scoop install llvm
-          echo "::set-env name=LIBCLANG_PATH::$HOME\scoop\apps\llvm\current\bin"
-          aria2c 'https://nmap.org/npcap/dist/npcap-0.9987.exe' -o npcap.exe
-          7z x -y 'npcap.exe' '$SYSDIR\wpcap.dll' '$SYSDIR\Packet.dll'
-          echo '##[add-path].\$SYSDIR'
-          
-          
-          mkdir cef_interface
-          
-          aria2c 'http://opensource.spotify.com/cefbuilds/cef_binary_80.1.15%2Bg7b802c9%2Bchromium-80.0.3987.163_windows64.tar.bz2' -o cef_binary.tar.bz2
-          7z x -y 'cef_binary.tar.bz2'
-          Remove-Item 'cef_binary.tar.bz2'
-          7z x -y 'cef_binary.tar'
-          Remove-Item 'cef_binary.tar'
-          Get-ChildItem 'cef_binary_*' | Rename-Item -NewName 'cef_binary'
-          Move-Item -Path 'cef_binary' -Destination 'cef_interface'
-          Get-ChildItem
-          Get-ChildItem cef_interface
