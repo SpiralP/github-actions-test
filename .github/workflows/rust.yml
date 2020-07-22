@@ -13,6 +13,10 @@ jobs:
           cmake --version
           type -a gcc
           
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v2
+
+          
   mac:
     name: Build MacOS
     runs-on: macOS-latest
