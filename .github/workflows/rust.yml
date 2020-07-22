@@ -8,6 +8,7 @@ jobs:
     steps:
       - name: aaa
         run: |
+          echo ok
           gcc --version
           gcc-9 --version
           cmake --version
