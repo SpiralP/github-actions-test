@@ -14,8 +14,8 @@ jobs:
           cmake --version
           type -a gcc
           
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v2
+#      - name: Debugging with tmate
+#        uses: mxschmitt/action-tmate@v2
 
           
   mac:
