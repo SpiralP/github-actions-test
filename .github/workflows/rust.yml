@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: aaa
         run: |
-          echo okasdasdasdssasasdasas
+          echo okasdasdasssasasdasas
           gcc --version
           gcc-9 --version
           cmake --version
