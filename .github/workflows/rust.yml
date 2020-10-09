@@ -2,31 +2,70 @@ name: Rust
 on: [push]
 
 jobs:
-  linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    steps:
-      - name: aaa
-        run: |
-          echo okasdasdasssassdasas
-          gcc --version
-          gcc-9 --version
-          cmake --version
-          type -a gcc
-          
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v2
+  windows:
+    name: Build Windows ${{ matrix.config.arch }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { arch: x86_64, bits: 64, target: x86_64-pc-windows-msvc }
+          # - { arch: i686, bits: 32, target: i686-pc-windows-msvc }
 
-          
-  mac:
-    name: Build MacOS
-    runs-on: macOS-latest
     steps:
-      - name: a
+      - uses: actions/checkout@v2
+
+      - name: Install nightly ${{ matrix.config.target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          # we have to use this toolchain because "libclang.dll: invalid DLL (32-bit)"
+          toolchain: nightly-${{ matrix.config.target }}
+          target: ${{ matrix.config.target }}
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        if: startsWith(github.ref, 'refs/tags/') != true
+        with:
+          command: build
+          args: --target ${{ matrix.config.target }}
+
+      - name: Test
+        uses: actions-rs/cargo@v1
+        if: startsWith(github.ref, 'refs/tags/') != true
+        with:
+          command: test
+          args: --target ${{ matrix.config.target }} -- --nocapture
+
+      - name: Build Release
+        uses: actions-rs/cargo@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          command: build
+          args: --target ${{ matrix.config.target }} --release
+
+      - name: Rename files
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          type -a gcc
-          gcc --version
-          gcc-9 --version
-          cmake --version
-          echo ag
-          type -a clang
+          Move-Item `
+            -Path 'target\${{ matrix.config.target }}\release\github_actions_test.dll' `
+            -Destination '.\windows_${{ matrix.config.arch }}.dll'
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            windows_${{ matrix.config.arch }}.dll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: VirusTotal Scan
+        uses: crazy-max/ghaction-virustotal@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          update_release_body: true
+          files: |
+            .dll$

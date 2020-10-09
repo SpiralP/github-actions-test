@@ -1,4 +1,4 @@
 #[no_mangle]
-pub fn hello() {
+pub extern "C" fn hello() {
     println!("ok");
 }

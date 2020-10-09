@@ -4,9 +4,14 @@ version = "0.1.0"
 authors = ["SpiralP <spiral.palmer@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
+
+
+[package.metadata.release]
+disable-publish = true
+pre-release-commit-message = "Release {{version}}"
+post-release-commit-message = "Begin {{next_version}}"
+tag-message = "Release version {{version}}"
