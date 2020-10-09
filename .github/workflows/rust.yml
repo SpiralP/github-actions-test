@@ -54,7 +54,9 @@ jobs:
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
+        id: upload-release
         with:
+          body: ${{ steps.upload-release.outputs.analysis }}
           files: |
             windows_${{ matrix.config.arch }}.dll
         env:
