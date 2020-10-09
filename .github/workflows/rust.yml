@@ -51,6 +51,16 @@ jobs:
             -Path 'target\${{ matrix.config.target }}\release\github_actions_test.dll' `
             -Destination '.\windows_${{ matrix.config.arch }}.dll'
 
+      - name: VirusTotal Scan
+        uses: crazy-max/ghaction-virustotal@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          update_release_body: true
+          files: |
+            windows_${{ matrix.config.arch }}.dll
+
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -61,13 +71,3 @@ jobs:
             windows_${{ matrix.config.arch }}.dll
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: VirusTotal Scan
-        uses: crazy-max/ghaction-virustotal@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          vt_api_key: ${{ secrets.VT_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          update_release_body: true
-          files: |
-            windows_${{ matrix.config.arch }}.dll
