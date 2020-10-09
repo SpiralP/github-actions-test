@@ -68,4 +68,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           update_release_body: true
           files: |
-            .dll$
+            windows_${{ matrix.config.arch }}.dll
