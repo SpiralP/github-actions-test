@@ -65,7 +65,7 @@ jobs:
       - name: asdfasdf
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          echo '${ {steps.virustotal.outputs.analysis }}'
+          echo '${{ fromJson("[" + steps.virustotal.outputs.analysis + "]").join("\n") }}'
 
       - name: Upload Release
         uses: softprops/action-gh-release@v1
