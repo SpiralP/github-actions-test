@@ -65,13 +65,13 @@ jobs:
       - name: asdfasdf
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          echo '${{ fromJson("[" + steps.virustotal.outputs.analysis + "]").join("\n") }}'
+          node .github\format-release.js '${{ steps.virustotal.outputs.analysis }}' > release.txt
 
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          body: ${{ steps.virustotal.outputs.analysis }}
+          body_path: release.txt
           files: |
             windows_${{ matrix.config.arch }}.dll
         env:
