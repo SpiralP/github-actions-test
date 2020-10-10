@@ -61,6 +61,10 @@ jobs:
           files: |
             windows_${{ matrix.config.arch }}.dll
 
+      - name: asdfasdf
+        run: |
+          echo '${{ steps.upload-release.outputs.analysis }}'
+
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
