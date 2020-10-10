@@ -54,6 +54,7 @@ jobs:
       - name: VirusTotal Scan
         uses: crazy-max/ghaction-virustotal@v2
         if: startsWith(github.ref, 'refs/tags/')
+        id: virustotal
         with:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -64,14 +65,13 @@ jobs:
       - name: asdfasdf
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          echo '${{ steps.upload-release.outputs.analysis }}'
+          echo '${ {steps.virustotal.outputs.analysis }}'
 
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
-        id: upload-release
         with:
-          body: ${{ steps.upload-release.outputs.analysis }}
+          body: ${{ steps.virustotal.outputs.analysis }}
           files: |
             windows_${{ matrix.config.arch }}.dll
         env:
